@@ -2,6 +2,7 @@ import { motion, useTransform, useScroll} from "framer-motion";
 import { useState, useRef, useEffect} from "react";
 import * as React from 'react';
 import  vid from './media/video/1/vid'
+import testImg from './media/video/1/01.jpg'
 
 const Main = () => {
 
@@ -12,7 +13,12 @@ const Main = () => {
           height: `100vh`,
         }}
       >
-        <span style={{fontFamily: 'WindSong', color: "#a67c00", fontSize: "8vw"}} className="text-neutral-500">
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        
+        <span style={{fontFamily: 'WindSong', color: "#a67c00", fontSize: "8vw"}}className="text-neutral-500">
           Custom Mannequin
         </span>
         <br/>
@@ -84,14 +90,14 @@ const VideoScroller = ({ video }) => {
 
   const inputRef = useRef();
 
-  const [background, setBackground] = useState(video[0].url);
+  const [background, setBackground] = useState(video[0].url.default);
   const handleScroll = () => {
-  const position = window.pageYOffset;
+  const position = window.scrollY;
     //console.log(Math.round(position/100) - (Math.floor((position/100) / (video.length-1))*(video.length-1))) 
 
     if (inputRef.current.getBoundingClientRect().y > -window.innerHeight && inputRef.current.getBoundingClientRect().y < window.innerHeight){
       //console.log((inputRef.current.getBoundingClientRect().y + window.innerHeight) /100)
-      setBackground(video[(Math.round(position/100) - (Math.floor((position/100) / (video.length-1))*(video.length-1)))].url)
+      setBackground(video[(Math.round(position/100) - (Math.floor((position/100) / (video.length-1))*(video.length-1)))].url.default)
     } 
     //console.log(inputRef.current.getBoundingClientRect())
   };
@@ -108,23 +114,34 @@ const VideoScroller = ({ video }) => {
   const x = useTransform(scrollYProgress, [0, 1], ["1%", "-95%"]);
   const classNameVar = "relative bg-neutral-900"
 
+  console.log(background)
+
   return (
     <section ref={targetRef} className={classNameVar}
       style={{
         height: `${(((video.length-1)*(100))-window.innerHeight)}px`,
       }}
     >
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden"
+          style={{            
+            position: "sticky",
+            top: "0"
+          }}
+      >
       < div ref={inputRef} className="group relative h-[100vh] w-[100vw] overflow-hidden bg-neutral-200"       
             
-          style={{            
+          style={{    
+            position: "sticky",        
             backgroundImage: `url(${background})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
+            height: "100vh",
           }}
-        > </div>
+        > 
         
-        <div className="hedden tiles"
+        </div>
+
+        <div
           style={{            
             visibility: "hidden",
             position: "absolute"
@@ -143,6 +160,7 @@ const VideoScroller = ({ video }) => {
 };
 
 const Card = ({ card , name }) => {
+
   return (
     <div
       key={card.id}
@@ -150,12 +168,13 @@ const Card = ({ card , name }) => {
     >
       <div
         style={{
-          backgroundImage: `url(${vid()[card.id - 1].url})`,
+          backgroundImage: `url(${card.url.default})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
-      ></div>
+        className="absolute inset-0 z-10 transition-transform duration-300 group-hover:scale-110"
+      >
+      </div>
       <div className="absolute inset-0 z-10 grid place-content-center">
         <p className="bg-gradient-to-br from-white/20 to-white/0 p-8 text-6xl font-black uppercase text-white backdrop-blur-lg">
           {card.title}
