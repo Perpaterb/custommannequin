@@ -10,8 +10,11 @@ export default function App() {
     return (
       <div className="App">
         <header className="App-header">
-          <Main/>
+        <Main/>
+          
         </header>
+        <body>
+        </body>
       </div>
     );
   } else {
